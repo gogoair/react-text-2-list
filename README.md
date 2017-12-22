@@ -15,7 +15,7 @@ require('../node_modules/react-text-2-list/css/style.css');
 ```
 ## Demo
 We prepared code sandbox demo. 
-[See demo here](https://codesandbox.io/embed/y0nzvl80lx)
+[See demo here](https://codesandbox.io/s/5mvvm7p75l)
 
 ## props/options
 

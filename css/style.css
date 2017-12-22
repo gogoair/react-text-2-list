@@ -161,6 +161,7 @@
     overflow: hidden;
     color: #3d3d3d;
     width: 100%;
+    text-align: left;
 }
 
 .Button.Text2List__removeAll {
