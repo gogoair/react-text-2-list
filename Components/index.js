@@ -1,0 +1,1 @@
+export { default as Text2List } from './Text2List.js';
