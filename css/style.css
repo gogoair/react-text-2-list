@@ -133,9 +133,13 @@
     outline: 1px solid #02355b;
 }
 
-.Text2List__buttonsWrapper .Button {
+.Text2List__buttonsWrapper {
+    flex: 0 1 100%;
+}
+
+.Text2List__buttonsWrapper .Button--action {
     display: block;
-    width: 100px;
+    width: 100%;
 }
 
 .Text2List__inputList {
@@ -194,6 +198,11 @@
 
     .Text2List__buttonsWrapper {
         flex: 1 0 33%;
+    }
+
+    .Text2List__buttonsWrapper .Button {
+        display: block;
+        width: 100px;
     }
 
     .Text2List__inputList {
