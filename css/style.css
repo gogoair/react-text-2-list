@@ -102,6 +102,7 @@
 .Text2List__heading {
     flex: 0 1 100%;
     margin: 7px 0;
+    text-align: left;
 }
 
 .Text2List__errorMessage {
@@ -132,10 +133,9 @@
     outline: 1px solid #02355b;
 }
 
-.Text2List__buttonsWrapper {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 0 1 100%;
+.Text2List__buttonsWrapper .Button {
+    display: block;
+    width: 100px;
 }
 
 .Text2List__inputList {

@@ -6,7 +6,7 @@ import Text2List from '../Components/Text2List';
 function render(Component) {
 	ReactDOM.render(
 		<HotContainer>
-			<div style={{ "maxWidth": "600px", "margin": "50px auto 0" }}>
+			<div style={{ "maxWidth": "1200px", "margin": "50px auto 0" }}>
 				<Component
                     onAdd={list => { console.log(list) }}
                     stopOnDuplicate
