@@ -52,7 +52,6 @@ export default class Text2List extends React.Component {
         inputListClassNames: PropTypes.object,
         placeholder: PropTypes.string,
         separators: PropTypes.string,
-        inputChangeCallback: PropTypes.func,
         stopOnDuplicate: PropTypes.bool,
         maxVisibleItems: PropTypes.number,
         heading: PropTypes.string,
@@ -125,8 +124,8 @@ export default class Text2List extends React.Component {
 
         this.setState({ inputItems: [...inputItems, ...this.state.inputItems], textInput: '' });
 
-        if (this.props.inputChangeCallback) {
-            this.props.inputChangeCallback(value);
+        if (this.props.onAdd) {
+            this.props.onAdd([...inputItems, ...this.state.inputItems]);
         }
     }
 
