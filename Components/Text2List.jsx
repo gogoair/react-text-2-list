@@ -170,7 +170,7 @@ export default class Text2List extends React.Component {
                     </button>
                     <button
                         className={this.props.classNames.enterButton}
-                        disabled={this.state.textInput.length === 0}
+                        disabled={this.state.textInput.trim().length === 0}
                         onClick={this.handleEnter}
                     >
                         Enter
