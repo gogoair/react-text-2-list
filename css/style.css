@@ -39,7 +39,7 @@
 
 /* --- button styles --- */
 
-.Button {
+.Text2List .Button {
     display: inline-block;
     height: 40px;
     font-weight: bold;
@@ -56,17 +56,17 @@
     flex: 0 1 100%;
 }
 
-.Button:focus {
+.Text2List .Button:focus {
     outline: none;
 }
 
-.Button.Button--action {
+.Text2List .Button.Button--action {
     color: #fff;
     background-color: #02355b;
     border-color: #02355b;
 }
 
-.Button.Button--action:disabled {
+.Text2List .Button.Button--action:disabled {
     color: #fff;
     background-color: #D7D7D7;
     border-color: #D7D7D7;
@@ -74,7 +74,7 @@
     cursor: not-allowed;
 }
 
-.Button.Button--underline {
+.Text2List .Button.Button--underline {
     height: 20px;
     line-height: 20px;
     margin-bottom: 14px;
@@ -84,7 +84,7 @@
     color: #02355b;
 }
 
-.Button.Button--underline:disabled {
+.Text2List .Button.Button--underline:disabled {
     cursor: not-allowed;
     color: #bcbcbc;
 }
@@ -164,14 +164,14 @@
     text-align: left;
 }
 
-.Button.Text2List__removeAll {
+.Text2List .Button.Text2List__removeAll {
     position: absolute;
     bottom: -30px;
     right: 0;
     width: 100px;
 }
 
-.Button.Text2List__removeOne {
+.Text2List .Button.Text2List__removeOne {
     background: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2233%22%20height%3D%2233%22%20viewBox%3D%220%200%2033%2033%22%3E%0A%20%20%20%20%3Cg%20fill%3D%22none%22%20fill-rule%3D%22nonzero%22%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2216.5%22%20cy%3D%2216.5%22%20r%3D%2216.5%22%20fill%3D%22%23595959%22/%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20fill%3D%22%23FFF%22%20d%3D%22M22.577%209.293l1.13%201.13a1%201%200%200%201%200%201.414l-11.87%2011.87a1%201%200%200%201-1.414%200l-1.13-1.13a1%201%200%200%201%200-1.414l11.87-11.87a1%201%200%200%201%201.414%200z%22/%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20fill%3D%22%23FFF%22%20d%3D%22M23.707%2022.576l-1.13%201.131a1%201%200%200%201-1.414%200l-11.87-11.87a1%201%200%200%201%200-1.413l1.13-1.131a1%201%200%200%201%201.414%200l11.87%2011.87a1%201%200%200%201%200%201.413z%22/%3E%0A%20%20%20%20%3C/g%3E%0A%3C/svg%3E) no-repeat 0 center;
     background-size: 13px;
     height: 45px;
@@ -184,7 +184,7 @@
 }
 
 @media(min-width: 521px) {
-    .Button {
+    .Text2List .Button {
         max-width: 100px;
     }
 
@@ -210,7 +210,7 @@
         flex: 0 1 66%;
     }
 
-    .Button.Text2List__removeOne {
+    .Text2List .Button.Text2List__removeOne {
         max-width: 100px;
         margin-right: 0;
     }
@@ -219,7 +219,7 @@
         display: inline-block;
     }
 
-    .Button.Text2List__removeAll {
+    .Text2List .Button.Text2List__removeAll {
         position: static;
         width: auto;
     }
