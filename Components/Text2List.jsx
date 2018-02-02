@@ -137,6 +137,7 @@ export default class Text2List extends React.Component {
 
     removeAll() {
         this.setState({ inputItems: [] });
+        this.props.onAdd([]);
     }
 
     removeOne(itemToDelete) {
@@ -145,6 +146,7 @@ export default class Text2List extends React.Component {
         });
 
         this.setState({ inputItems: newInputItems });
+        this.props.onAdd(newInputItems);
     }
 
     render() {
