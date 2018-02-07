@@ -1,7 +1,7 @@
 /* --- reset --- */
 .Text2List * {
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .Text2List ::-webkit-input-placeholder {
@@ -92,7 +92,6 @@
 /* --- main styles --- */
 
 .Text2List {
-    padding: 10px;
     display: flex;
     flex-wrap: wrap;
     background: transparent;
@@ -165,6 +164,9 @@
 }
 
 .Text2List .Button.Text2List__removeAll {
+    padding: 0;
+    margin: 5px 0 10px 0;
+    border: none;
     position: absolute;
     bottom: -30px;
     right: 0;
