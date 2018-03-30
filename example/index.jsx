@@ -9,6 +9,10 @@ function render(Component) {
 			<div style={{ "maxWidth": "1200px", "margin": "50px auto 0" }}>
 				<Component
                     onAdd={list => { console.log(list) }}
+                    // stopOnDuplicate
+                    // stopOnMaxItemsError
+                    validateEntry={item => item.length < 2}
+                    // maxItems={3}
                 />
 			</div>
 		</HotContainer>,

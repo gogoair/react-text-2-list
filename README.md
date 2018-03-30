@@ -79,9 +79,15 @@ export default class FakeComponent extends Component {
 | **onAdd** | function | none | Callback to invoke on adding item(s) in the list, gets passed array of strings that are entries it the list |
 | **placeholder** | string | "1 or more codes accepted" | Placeholder text for textarea |
 | **separators** | string | space and comma | String that we will use to make RegExp to separate entered text in textarea, ie. series of characters separated with pipe |
-| **stopOnDuplicate** | boolean | false | If true, it will stop submit if there are duplicate items entered or item already exists in the list. Otherwise, it will silently ignore duplicates |
+| **stopOnDuplicate** | boolean | false | If true, it will stop submit if there are duplicate items entered or item already exists in the list. Otherwise, it will just show error message and filter out duplicates on enter |
 | **maxVisibleItems** | number | 4 | It will determine the max-height of the list, with 45px being height of one entry and add a scroll if needed |
-| **heading** | string | "Product code/number" | Text for h4 tag
+| **maxItems** | number | none | Max number of allowed entries |
+| **stopOnMaxItemsError** | boolean | false | If true, it will stop submit if there are more items entered than specified in maxItems prop. Otherwise, it will just show error message and truncate entries to match max items allowed in list |
+| **validateEntry** | function | none | Function that takes single entry as sole argument. Should return true or false |
+| **stopOnValidationError** | boolean | false | If true, it will stop submit if if one or more items didn't pass validateEntry check. Otherwise, it will just show error message and filter out invalid entries before enter |
+| **validationErrorMessage** | string | "Entries need to be valid." | Error message to show if one or more items didn't pass the validateEntry check. Will get added a list of invalid entries to the end of it |
+| **enterButtonText** | string | "Enter" | Text that you want to show on "Enter" button |
+| **heading** | string | "Product code/number" | Text for h4 tag |
 
 ### Customizing and contributing
 

@@ -154,6 +154,18 @@ describe('Adding to list', () => {
 
         text2List.unmount();
     });
+
+    it('Calls onAdd with proper args when item(s) added', () => {
+        const spy = sinon.spy();
+        const text2List = mount(<Text2List onAdd={spy} />);
+
+        text2List.find('.Text2List__input').simulate('change', { target: { value: 'text1 text2,text3 text4' } });
+        text2List.find('.Button--action').simulate('click');
+
+        expect(spy.calledWith(['text1', 'text2', 'text3', 'text4'])).to.be.true;
+
+        text2List.unmount();
+    });
 });
 
 describe('Removing entries from list', () => {
@@ -181,18 +193,128 @@ describe('Removing entries from list', () => {
 
         text2List.unmount();
     });
+
+    it('Calls onAdd with props args on item(s) remove', () => {
+        const spy = sinon.spy();
+        const text2List = mount(<Text2List onAdd={spy} />);
+
+        text2List.setState({ inputItems: ['text1', 'text2', 'text3', 'text4'] });
+        text2List.find('.Text2List__inputListItem').first().find('.Button.Button--underline.Text2List__removeOne').simulate('click');
+
+        expect(spy.calledWith(['text2', 'text3', 'text4'])).to.be.true;
+
+        text2List.unmount();
+    });
 });
 
+
+// ?
 describe('Error handling', () => {
 
-    it('Shows errors message on duplicate entries if stopOnDuplicate is enabled', () => {
+    it('Shows errors message on duplicate entries', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} />);
+
+        text2List.setState({ inputItems: ['a', 'b'] });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   a  c   b   d' } });
+        text2List.find('.Button--action').simulate('click');
+
+        expect(text2List.find('.Text2List__duplicatesErrorMessage').length).to.equal(1);
+
+        text2List.unmount();
+    });
+
+    it('Filters out duplicate items when stopOnDuplicate is false', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} />);
+
+        text2List.setState({ inputItems: ['a', 'b'] });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   a  c   b   d' } });
+        text2List.find('.Button--action').simulate('click');
+
+        expect(text2List.state().inputItems).to.deep.equal(['c', 'd', 'a', 'b']);
+
+        text2List.unmount();
+    });
+
+    it('Stops item(s) entering to list when stopOnDuplicate is true', () => {
         const text2List = mount(<Text2List onAdd={() => {}} stopOnDuplicate />);
 
         text2List.setState({ inputItems: ['a', 'b'] });
         text2List.find('.Text2List__input').simulate('change', { target: { value: '   a  c   b   d' } });
         text2List.find('.Button--action').simulate('click');
 
+        expect(text2List.state().inputItems).to.deep.equal(['a', 'b']);
+
+        text2List.unmount();
+    });
+
+    it('Shows errors message on more entries than allowed', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} maxItems={3} />);
+
+        text2List.setState({ inputItems: ['a', 'b'] });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   1  c   2   d' } });
+        text2List.find('.Button--action').simulate('click');
+
         expect(text2List.find('.Text2List__errorMessage').length).to.equal(1);
+
+        text2List.unmount();
+    });
+
+    it('Enters proper number of items when stopOnMaxItemsError is false', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} maxItems={3} />);
+
+        text2List.setState({ inputItems: ['a', 'b'] });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   1  c   2   d' } });
+        text2List.find('.Button--action').simulate('click');
+
+        expect(text2List.state().inputItems).to.deep.equal(['1', 'a', 'b']);
+
+        text2List.unmount();
+    });
+
+    it('Stops enter stopOnMaxItemsError is true', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} maxItems={3} stopOnMaxItemsError />);
+
+        text2List.setState({ inputItems: ['a', 'b'] });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   1  c   2   d' } });
+        text2List.find('.Button--action').simulate('click');
+
+        expect(text2List.state().inputItems).to.deep.equal(['a', 'b']);
+
+        text2List.unmount();
+    });
+    //
+    it('Shows errors message when custom validation fails', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} validateEntry={item => item.length < 3} />);
+
+        text2List.setState({ inputItems: ['a', 'b'] });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   123  c   21234   d' } });
+        text2List.find('.Button--action').simulate('click');
+
+        expect(text2List.find('.Text2List__errorMessage').length).to.equal(1);
+
+        text2List.unmount();
+    });
+
+    it('Enters valid items when stopOnValidationError is false', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} validateEntry={item => item.length < 3} />);
+
+        text2List.setState({ inputItems: ['a', 'b'] });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   123  c   21234   d' } });
+        text2List.find('.Button--action').simulate('click');
+
+        expect(text2List.state().inputItems).to.deep.equal(['c', 'd', 'a', 'b']);
+
+        text2List.unmount();
+    });
+
+    it('Stops enter when stopOnValidationError is true', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} validateEntry={item => item.length < 3} stopOnValidationError />);
+
+        text2List.setState({ inputItems: ['a', 'b'] });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   123  c   21234   d' } });
+        text2List.find('.Button--action').simulate('click');
+
+        expect(text2List.state().inputItems).to.deep.equal(['a', 'b']);
 
         text2List.unmount();
     });

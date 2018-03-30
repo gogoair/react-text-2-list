@@ -11,6 +11,9 @@ export default class Text2List extends React.Component {
         this.state = {
             inputItems: [],
             textInput: '',
+            maxItemsErrorMessage: undefined,
+            validationErrorMessage: undefined,
+            invalidEntries: [],
         };
 
         this.getInputItems = ::this.getInputItems;
@@ -31,6 +34,7 @@ export default class Text2List extends React.Component {
             enterButton: 'Button Button--action',
             removeButton: 'Button Button--underline Text2List__removeAll',
             errorMessage: 'Text2List__errorMessage',
+            duplicatesErrorMessage: 'Text2List__duplicatesErrorMessage',
             errorItems: 'Text2List__errorItems',
         },
         inputListClassNames: {
@@ -44,6 +48,8 @@ export default class Text2List extends React.Component {
         stopOnDuplicate: false,
         maxVisibleItems: 4,
         heading: 'Product code/number',
+        enterButtonText: 'Enter',
+        validationErrorMessage: 'Entries need to be valid.'
     };
 
     static propTypes = {
@@ -53,8 +59,14 @@ export default class Text2List extends React.Component {
         placeholder: PropTypes.string,
         separators: PropTypes.string,
         stopOnDuplicate: PropTypes.bool,
+        stopOnMaxItemsError: PropTypes.bool,
+        stopOnValidationError: PropTypes.bool,
         maxVisibleItems: PropTypes.number,
         heading: PropTypes.string,
+        enterButtonText: PropTypes.string,
+        maxItems: PropTypes.number,
+        validateEntry: PropTypes.func,
+        validationErrorMessage: PropTypes.string,
     };
 
     notWhiteSpaceOnlyOrEmptyString(item) {
@@ -84,42 +96,91 @@ export default class Text2List extends React.Component {
             .dup;
     }
 
+    truncateItems = (items, howMany) => {
+        return items.slice(0, howMany);
+    };
+
+    moreThanMax = items => {
+      return items.length > this.props.maxItems || items.length + this.state.inputItems.length > this.props.maxItems;
+    };
+
+    setTextAreaDuplicates = duplicates => {
+        this.setState({ duplicates: duplicates.length > 0 ? duplicates : undefined });
+    };
+
+    setInputListDuplicates = duplicates => {
+        if (duplicates.length > 0) {
+            this.setState({ duplicates });
+        } else if (this.state.inputItems.length > 0) {
+            this.setState({ duplicates: undefined });
+        }
+    };
+
     handleEnter() {
         const inputItemsFromText = this.getInputItems(this.state.textInput).filter((item) => {
             return  this.notWhiteSpaceOnlyOrEmptyString(item);
         });
 
-        // handle duplicates inside the text area
-        if (this.props.stopOnDuplicate) {
-            const duplicates = uniq(this.getDuplicates(inputItemsFromText));
+        // handle duplicates that are entered in text area
+        const inputDuplicates = uniq(this.getDuplicates(inputItemsFromText));
+        this.setTextAreaDuplicates(inputDuplicates);
 
-            if (duplicates.length > 0) {
-                this.setState({ duplicates });
-
-                return;
-            } else {
-                this.setState({ duplicates: undefined });
-            }
+        if (this.props.stopOnDuplicate && inputDuplicates.length > 0) {
+            return;
         }
 
         let uniqueItems = uniq(inputItemsFromText);
-        let duplicates = [];
+        let listDuplicates = [];
 
-        const inputItems = uniqueItems.filter((item) => {
+        let inputItems = uniqueItems.filter((item) => {
             if(this.isItemAlreadyInState(item)) {
-                duplicates.push(item);
+                listDuplicates.push(item);
             }
 
             return !this.isItemAlreadyInState(item);
         });
 
         // handle duplicates that are already in the list
-        if (this.props.stopOnDuplicate && duplicates.length > 0) {
-            this.setState({ duplicates });
-
+        this.setInputListDuplicates(listDuplicates);
+        if (this.props.stopOnDuplicate && listDuplicates.length > 0) {
             return;
+        }
+
+        // handle max items
+        if (this.moreThanMax(inputItems) && this.props.stopOnMaxItemsError) {
+            this.setState({ maxItemsErrorMessage: `Max number of entries is ${this.props.maxItems}` });
+            return;
+        } else if (this.moreThanMax(inputItems)) {
+            this.setState({ maxItemsErrorMessage: `Max number of entries is ${this.props.maxItems}` });
+            const howMany = this.props.maxItems - this.state.inputItems.length;
+            inputItems = this.truncateItems(inputItems, howMany);
         } else {
-            this.setState({ duplicates: undefined });
+            this.setState({ maxItemsErrorMessage: undefined });
+        }
+
+        // validateEntry
+        if (this.props.validateEntry) {
+            let invalidItems = [];
+
+            inputItems = inputItems.filter(item => {
+                const isValid = this.props.validateEntry(item);
+                if (!isValid) {
+                    invalidItems.push(item);
+                }
+                return isValid;
+            });
+
+            if (invalidItems.length > 0) {
+                this.setState({
+                    validationErrorMessage: this.props.validationErrorMessage,
+                    invalidEntries: invalidItems,
+                });
+                if (this.props.stopOnValidationError) {
+                    return;
+                }
+            } else {
+                this.setState({ validationErrorMessage: undefined, invalidEntries: [], });
+            }
         }
 
         this.setState({ inputItems: [...inputItems, ...this.state.inputItems], textInput: '' });
@@ -154,7 +215,6 @@ export default class Text2List extends React.Component {
             <div className={this.props.classNames.wrapper}>
                 <h4 className={this.props.classNames.heading}>{this.props.heading}</h4>
                 <textarea
-                    type="text"
                     name="inputItem"
                     placeholder={this.props.placeholder}
                     className={this.props.classNames.input}
@@ -175,14 +235,26 @@ export default class Text2List extends React.Component {
                         disabled={this.state.textInput.trim().length === 0}
                         onClick={this.handleEnter}
                     >
-                        Enter
+                        {this.props.enterButtonText}
                     </button>
                 </div>
                 {this.state.duplicates
-                    ? <div className={this.props.classNames.errorMessage}>
+                    ? <div className={this.props.classNames.duplicatesErrorMessage}>
                         You entered duplicate entries:
                         <span className={this.props.classNames.errorItems}>{this.state.duplicates.join(', ')}</span>
-                    </div> : null}
+                      </div>
+                    : null}
+                {this.state.maxItemsErrorMessage
+                    ? <div className={this.props.classNames.errorMessage}>
+                        {this.state.maxItemsErrorMessage}
+                      </div>
+                    : null}
+                {this.state.validationErrorMessage
+                    ? <div className={this.props.classNames.errorMessage}>
+                        {this.state.validationErrorMessage}
+                        {`Invalid entries: ${this.state.invalidEntries.join(', ')}`}
+                    </div>
+                    : null}
                 <InputList
                     inputItems={this.state.inputItems}
                     classNames={this.props.inputListClassNames}

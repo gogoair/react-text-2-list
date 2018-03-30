@@ -197,7 +197,12 @@
 
     .Text2List__errorMessage {
         flex: 1 0 66%;
+		color: red;
     }
+
+	.Text2List__duplicatesErrorMessage {
+		flex: 1 0 66%;
+	}
 
     .Text2List__buttonsWrapper {
         flex: 1 0 33%;
