@@ -207,15 +207,13 @@ describe('Removing entries from list', () => {
     });
 });
 
-
-// ?
 describe('Error handling', () => {
 
     it('Shows errors message on duplicate entries', () => {
         const text2List = mount(<Text2List onAdd={() => {}} />);
 
         text2List.setState({ inputItems: ['a', 'b'] });
-        text2List.find('.Text2List__input').simulate('change', { target: { value: '   a  c   b   d' } });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: ' a  c   b   d' } });
         text2List.find('.Button--action').simulate('click');
 
         expect(text2List.find('.Text2List__duplicatesErrorMessage').length).to.equal(1);
@@ -227,7 +225,7 @@ describe('Error handling', () => {
         const text2List = mount(<Text2List onAdd={() => {}} />);
 
         text2List.setState({ inputItems: ['a', 'b'] });
-        text2List.find('.Text2List__input').simulate('change', { target: { value: '   a  c   b   d' } });
+        text2List.find('.Text2List__input').simulate('change', { target: { value: ' c  a  c   b   d' } });
         text2List.find('.Button--action').simulate('click');
 
         expect(text2List.state().inputItems).to.deep.equal(['c', 'd', 'a', 'b']);
@@ -282,7 +280,7 @@ describe('Error handling', () => {
 
         text2List.unmount();
     });
-    //
+
     it('Shows errors message when custom validation fails', () => {
         const text2List = mount(<Text2List onAdd={() => {}} validateEntry={item => item.length < 3} />);
 
@@ -318,4 +316,42 @@ describe('Error handling', () => {
 
         text2List.unmount();
     });
+});
+
+describe('Async validation', () => {
+
+   it('Disables enter button when isInPendingState is true', () => {
+        sinon.spy(Text2List.prototype, 'handleEnter');
+        const text2List = mount(<Text2List onAdd={() => {}} asyncValidation isInPendingState />);
+
+        expect(Text2List.prototype.handleEnter.notCalled).to.be.true;
+
+        Text2List.prototype.handleEnter.restore();
+        text2List.unmount();
+    });
+
+    it('Exits handle enter when asyncValidation is true', () => {
+        const text2List = mount(<Text2List onAdd={() => {}} asyncValidation />);
+
+        text2List.find('.Text2List__input').simulate('change', { target: { value: '   123  c   21234   d' } });
+        text2List.find('.Button--action').simulate('click');
+        text2List.setProps({ isInPendingState: true });
+
+        expect(text2List.find('.Text2List__inputListItem').length).to.equal(0);
+
+        text2List.unmount();
+    });
+
+    it('Calls handle enter when isInPendingState transitions from true to false', () => {
+        sinon.spy(Text2List.prototype, 'handleEnter');
+        const text2List = mount(<Text2List onAdd={() => {}} asyncValidation isInPendingState />);
+
+        text2List.setProps({ isInPendingState: false });
+
+        expect(Text2List.prototype.handleEnter.calledOnce).to.be.true;
+
+        Text2List.prototype.handleEnter.restore();
+        text2List.unmount();
+    });
+
 });

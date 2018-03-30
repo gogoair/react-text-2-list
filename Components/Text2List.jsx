@@ -50,6 +50,7 @@ export default class Text2List extends React.Component {
         heading: 'Product code/number',
         enterButtonText: 'Enter',
         validationErrorMessage: 'Entries need to be valid.'
+        pendingEnterButtonText: 'Validating...',
     };
 
     static propTypes = {
@@ -67,7 +68,16 @@ export default class Text2List extends React.Component {
         maxItems: PropTypes.number,
         validateEntry: PropTypes.func,
         validationErrorMessage: PropTypes.string,
+        isInPendingState: PropTypes.bool,
+        pendingEnterButtonText: PropTypes.string,
+        asyncValidation: PropTypes.bool,
     };
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.isInPendingState && !this.props.isInPendingState) {
+            this.handleEnter();
+        }
+    }
 
     notWhiteSpaceOnlyOrEmptyString(item) {
         return item.length > 0 && !!item.match(/\S/);
@@ -116,10 +126,39 @@ export default class Text2List extends React.Component {
         }
     };
 
-    handleEnter() {
-        const inputItemsFromText = this.getInputItems(this.state.textInput).filter((item) => {
+    handleEnter(asyncValidation) {
+        let inputItemsFromText = this.getInputItems(this.state.textInput).filter(item => {
             return  this.notWhiteSpaceOnlyOrEmptyString(item);
         });
+
+        if (asyncValidation) {
+            return;
+        }
+
+        // validateEntry
+        if (this.props.validateEntry) {
+            let invalidItems = [];
+
+            inputItemsFromText = inputItemsFromText.filter(item => {
+                const isValid = this.props.validateEntry(item);
+                if (!isValid) {
+                    invalidItems.push(item);
+                }
+                return isValid;
+            });
+
+            if (invalidItems.length > 0) {
+                this.setState({
+                    validationErrorMessage: this.props.validationErrorMessage,
+                    invalidEntries: invalidItems,
+                });
+                if (this.props.stopOnValidationError) {
+                    return;
+                }
+            } else {
+                this.setState({ validationErrorMessage: undefined, invalidEntries: [], });
+            }
+        }
 
         // handle duplicates that are entered in text area
         const inputDuplicates = uniq(this.getDuplicates(inputItemsFromText));
@@ -156,31 +195,6 @@ export default class Text2List extends React.Component {
             inputItems = this.truncateItems(inputItems, howMany);
         } else {
             this.setState({ maxItemsErrorMessage: undefined });
-        }
-
-        // validateEntry
-        if (this.props.validateEntry) {
-            let invalidItems = [];
-
-            inputItems = inputItems.filter(item => {
-                const isValid = this.props.validateEntry(item);
-                if (!isValid) {
-                    invalidItems.push(item);
-                }
-                return isValid;
-            });
-
-            if (invalidItems.length > 0) {
-                this.setState({
-                    validationErrorMessage: this.props.validationErrorMessage,
-                    invalidEntries: invalidItems,
-                });
-                if (this.props.stopOnValidationError) {
-                    return;
-                }
-            } else {
-                this.setState({ validationErrorMessage: undefined, invalidEntries: [], });
-            }
         }
 
         this.setState({ inputItems: [...inputItems, ...this.state.inputItems], textInput: '' });
@@ -232,10 +246,12 @@ export default class Text2List extends React.Component {
                     </button>
                     <button
                         className={this.props.classNames.enterButton}
-                        disabled={this.state.textInput.trim().length === 0}
-                        onClick={this.handleEnter}
+                        disabled={this.state.textInput.trim().length === 0 || this.props.isInPendingState}
+                        onClick={event => this.handleEnter(this.props.asyncValidation)}
                     >
-                        {this.props.enterButtonText}
+                        {!this.props.isInPendingState
+                            ? this.props.enterButtonText
+                            : this.props.pendingEnterButtonText}
                     </button>
                 </div>
                 {this.state.duplicates

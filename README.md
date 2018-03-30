@@ -78,6 +78,7 @@ export default class FakeComponent extends Component {
 | ------------ | ------- | ------- | ----------- |
 | **onAdd** | function | none | Callback to invoke on adding item(s) in the list, gets passed array of strings that are entries it the list |
 | **placeholder** | string | "1 or more codes accepted" | Placeholder text for textarea |
+| **heading** | string | "Product code/number" | Heading(label) text above text area |
 | **separators** | string | space and comma | String that we will use to make RegExp to separate entered text in textarea, ie. series of characters separated with pipe |
 | **stopOnDuplicate** | boolean | false | If true, it will stop submit if there are duplicate items entered or item already exists in the list. Otherwise, it will just show error message and filter out duplicates on enter |
 | **maxVisibleItems** | number | 4 | It will determine the max-height of the list, with 45px being height of one entry and add a scroll if needed |
@@ -87,7 +88,9 @@ export default class FakeComponent extends Component {
 | **stopOnValidationError** | boolean | false | If true, it will stop submit if if one or more items didn't pass validateEntry check. Otherwise, it will just show error message and filter out invalid entries before enter |
 | **validationErrorMessage** | string | "Entries need to be valid." | Error message to show if one or more items didn't pass the validateEntry check. Will get added a list of invalid entries to the end of it |
 | **enterButtonText** | string | "Enter" | Text that you want to show on "Enter" button |
-| **heading** | string | "Product code/number" | Text for h4 tag |
+| **asyncValidation** | boolean | false | Whether you are going to use async validation. It should work like this: you transition isInPendingState state prop to false when some API call is done and supply validateEntry that checks if entry is one of items that your API returned as invalid. You can alos feed the message from API into validationErrorMessage |
+| **isInPendingState** | boolean | false | Use it in combination with asyncValidation prop. Transition it to true while your API call for validation is in progress and to false when it's done. You can also use it for straight submitting to API |
+| **pendingEnterButtonText** | string | "Validating..." | Text to display on enter button while isInPendingState is true |
 
 ### Customizing and contributing
 
