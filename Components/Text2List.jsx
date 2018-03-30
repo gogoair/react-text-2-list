@@ -49,7 +49,7 @@ export default class Text2List extends React.Component {
         maxVisibleItems: 4,
         heading: 'Product code/number',
         enterButtonText: 'Enter',
-        validationErrorMessage: 'Entries need to be valid.'
+        validationErrorMessage: 'Entries need to be valid.',
         pendingEnterButtonText: 'Validating...',
     };
 
