@@ -186,47 +186,47 @@
 }
 
 @media(min-width: 521px) {
-    .Text2List .Button {
+    .Text2List--responsive .Button {
         max-width: 100px;
     }
 
-    .Text2List__input {
+    .Text2List--responsive .Text2List__input {
         flex: 1 0 66%;
         margin: 0 1% 0 0;
     }
 
-    .Text2List__errorMessage {
+    .Text2List--responsive .Text2List__errorMessage {
         flex: 1 0 66%;
 		color: red;
     }
 
-	.Text2List__duplicatesErrorMessage {
+	.Text2List--responsive .Text2List__duplicatesErrorMessage {
 		flex: 1 0 66%;
 	}
 
-    .Text2List__buttonsWrapper {
+    .Text2List--responsive .Text2List__buttonsWrapper {
         flex: 1 0 33%;
     }
 
-    .Text2List__buttonsWrapper .Button {
+    .Text2List--responsive .Text2List__buttonsWrapper .Button {
         display: block;
         width: 100px;
     }
 
-    .Text2List__inputList {
+    .Text2List--responsive .Text2List__inputList {
         flex: 0 1 66%;
     }
 
-    .Text2List .Button.Text2List__removeOne {
+    .Text2List--responsive .Button.Text2List__removeOne {
         max-width: 100px;
         margin-right: 0;
     }
 
-    .Text2List__removeOneText {
+    .Text2List--responsive .Text2List__removeOneText {
         display: inline-block;
     }
 
-    .Text2List .Button.Text2List__removeAll {
+    .Text2List--responsive .Button.Text2List__removeAll {
         position: static;
         width: auto;
     }

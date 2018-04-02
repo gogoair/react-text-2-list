@@ -36,6 +36,7 @@ export default class Text2List extends React.Component {
             errorMessage: 'Text2List__errorMessage',
             duplicatesErrorMessage: 'Text2List__duplicatesErrorMessage',
             errorItems: 'Text2List__errorItems',
+            responsiveWrapper: 'Text2List--responsive'
         },
         inputListClassNames: {
             wrapper: 'Text2List__inputList',
@@ -226,7 +227,7 @@ export default class Text2List extends React.Component {
 
     render() {
         return (
-            <div className={this.props.classNames.wrapper}>
+            <div className={this.props.classNames.wrapper + ' ' + this.props.classNames.responsiveWrapper}>
                 <h4 className={this.props.classNames.heading}>{this.props.heading}</h4>
                 <textarea
                     name="inputItem"
