@@ -1,6 +1,14 @@
-{
-"useTabs": true,
-"singleQuote": true,
-"trailingComma": "es5",
-"printWidth": 120
-}
+test
+Components
+node_modules
+index.html
+example
+.idea
+.babelrc
+.eslintrc
+.directory
+.DS_Store
+.prettierrc
+webpack.config.js
+package-lock.json
+yarn.lock

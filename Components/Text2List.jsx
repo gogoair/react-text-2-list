@@ -44,11 +44,9 @@ export default class Text2List extends React.Component {
             inputItemText: 'Text2List__inputListItemText',
             removeButton: 'Button Button--underline Text2List__removeOne',
         },
-        placeholder: '1 or more codes accepted',
         separators: ' |,',
         stopOnDuplicate: false,
         maxVisibleItems: 4,
-        heading: 'Product code/number',
         enterButtonText: 'Enter',
         validationErrorMessage: 'Entries need to be valid.',
         pendingEnterButtonText: 'Validating...',
@@ -228,7 +226,7 @@ export default class Text2List extends React.Component {
     render() {
         return (
             <div className={this.props.classNames.wrapper + ' ' + this.props.classNames.responsiveWrapper}>
-                <h4 className={this.props.classNames.heading}>{this.props.heading}</h4>
+                {this.props.heading && <h4 className={this.props.classNames.heading}>{this.props.heading}</h4>}
                 <textarea
                     name="inputItem"
                     placeholder={this.props.placeholder}
