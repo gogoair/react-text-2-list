@@ -77,8 +77,8 @@ export default class FakeComponent extends Component {
 | Property         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
 | **onAdd** | function | none | Callback to invoke on adding item(s) in the list, gets passed array of strings that are entries it the list |
-| **placeholder** | string | "1 or more codes accepted" | Placeholder text for textarea |
-| **heading** | string | "Product code/number" | Heading(label) text above text area |
+| **placeholder** | string | undefined | Placeholder text for textarea |
+| **heading** | string | undefined | Heading(label) text above text area. If not provided no heading will be rendered |
 | **separators** | string | space and comma | String that we will use to make RegExp to separate entered text in textarea, ie. series of characters separated with pipe |
 | **stopOnDuplicate** | boolean | false | If true, it will stop submit if there are duplicate items entered or item already exists in the list. Otherwise, it will just show error message and filter out duplicates on enter |
 | **maxVisibleItems** | number | 4 | It will determine the max-height of the list, with 45px being height of one entry and add a scroll if needed |
