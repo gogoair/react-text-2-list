@@ -49,7 +49,9 @@ export default class Text2List extends React.Component {
         maxVisibleItems: 4,
         enterButtonText: 'Enter',
         validationErrorMessage: 'Entries need to be valid.',
+        invalidEntriesLabel: 'Invalid entries: ',
         pendingEnterButtonText: 'Validating...',
+        duplicatesErrorText: 'You entered duplicate entries:',
     };
 
     static propTypes = {
@@ -255,7 +257,7 @@ export default class Text2List extends React.Component {
                 </div>
                 {this.state.duplicates
                     ? <div className={this.props.classNames.duplicatesErrorMessage}>
-                        You entered duplicate entries:
+                        {this.props.duplicatesErrorText}
                         <span className={this.props.classNames.errorItems}>{this.state.duplicates.join(', ')}</span>
                       </div>
                     : null}
@@ -267,7 +269,7 @@ export default class Text2List extends React.Component {
                 {this.state.validationErrorMessage
                     ? <div className={this.props.classNames.errorMessage}>
                         {this.state.validationErrorMessage}
-                        {`Invalid entries: ${this.state.invalidEntries.join(', ')}`}
+                        {`${this.props.invalidEntriesLabel}${this.state.invalidEntries.join(', ')}`}
                     </div>
                     : null}
                 <InputList
