@@ -212,7 +212,12 @@ export default class Text2List extends React.Component {
     }
 
     removeAll() {
-        this.setState({ inputItems: [] });
+        this.setState({
+            inputItems: [],
+            invalidEntries: [],
+            validationErrorMessage: undefined,
+            maxItemsErrorMessage: undefined,
+        });
         this.props.onAdd([]);
     }
 
