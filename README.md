@@ -91,6 +91,8 @@ export default class FakeComponent extends Component {
 | **asyncValidation** | boolean | false | Whether you are going to use async validation. It should work like this: you transition isInPendingState state prop to false when some API call is done and supply validateEntry that checks if entry is one of items that your API returned as invalid. You can alos feed the message from API into validationErrorMessage |
 | **isInPendingState** | boolean | false | Use it in combination with asyncValidation prop. Transition it to true while your API call for validation is in progress and to false when it's done. You can also use it for straight submitting to API |
 | **pendingEnterButtonText** | string | "Validating..." | Text to display on enter button while isInPendingState is true |
+| **invalidEntriesLabel** | string | "Invalid entries:" | Text to display before the invalid entries |
+| **duplicatesErrorText** | string | "You entered duplicate entries:" | Text do display before the duplicate entries |
 
 ### Customizing and contributing
 
