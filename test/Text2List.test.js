@@ -53,7 +53,7 @@ describe('Enable/disable submit/remove', () => {
         Text2List.prototype.handleEnter.restore();
         text2List.unmount();
 
-        text2List.unmount();
+        // text2List.unmount();
     });
 
     it('Prevents remove all if InputList is empty', () => {
